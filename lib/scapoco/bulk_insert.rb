@@ -24,7 +24,7 @@ class Scapoco::BulkInsert
         new_arr << cast_value(values[attr.to_sym])
       end
 
-      new_arr << ["'#{Time.now.utc.to_formatted_s(:db)}'", "'#{Time.now.utc.to_formatted_s(:db)}'"]
+      new_arr << ["CURRENT_TIMESTAMP AT TIME ZONE 'UTC'", "CURRENT_TIMESTAMP AT TIME ZONE 'UTC'"]
 
       sql << '(' + new_arr.join(', ') + ')'
     end

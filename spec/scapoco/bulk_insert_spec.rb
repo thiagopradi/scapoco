@@ -5,9 +5,23 @@ describe Scapoco::BulkInsert do
 
   context "#save!" do
     it "allows to do bulk insert" do
-      bulk_insert.data << { title: "foo", text: "foo",  flag: 1 }
+      bulk_insert.data << { title: "foo", text: "bar",  flag: 1 }
       bulk_insert.data << { title: "OMG", text: "text", flag: 2 }
       expect { bulk_insert.save! }.to change(Post, :count).by(+2)
+
+      p = Post.first
+      p.title.should == "foo"
+      p.text.should  == "bar"
+      p.flag.should  == 1
+      p.attributes['created_at'].should_not be_nil
+      p.attributes['updated_at'].should_not be_nil
+
+      p = Post.last
+      p.title.should == "OMG"
+      p.text.should  == "text"
+      p.flag.should  == 2
+      p.attributes['created_at'].should_not be_nil
+      p.attributes['updated_at'].should_not be_nil
     end
   end
 
@@ -20,7 +34,7 @@ describe Scapoco::BulkInsert do
   context "#values_for_insert" do
     it "should iterate over all data, and join correctly" do
       bulk_insert.data << { title: "foo", text: "bar", flag:1 }
-      bulk_insert.values_for_insert.should == "(1, 'bar', 'foo', '#{Time.now.utc.to_formatted_s(:db)}', '#{Time.now.utc.to_formatted_s(:db)}')"
+      bulk_insert.values_for_insert.should == "(1, 'bar', 'foo', CURRENT_TIMESTAMP AT TIME ZONE 'UTC', CURRENT_TIMESTAMP AT TIME ZONE 'UTC')"
     end
   end
 
