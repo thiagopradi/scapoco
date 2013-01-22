@@ -21,6 +21,7 @@ Jeweler::Tasks.new do |gem|
   gem.description = %Q{TODO: longer description of your gem}
   gem.email = "thiago.pradi@gmail.com"
   gem.authors = ["Thiago Pradi"]
+  gem.add_dependency 'activerecord', "~> 3.0"
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
